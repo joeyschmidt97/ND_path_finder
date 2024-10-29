@@ -1,11 +1,8 @@
 import time
 import xarray as xr
 import numpy as np
-
 from sklearn.preprocessing import MinMaxScaler
 from perlin_noise import PerlinNoise
-from joblib import Parallel, delayed
-
 
 
 class PerlinNoiseGenerator:
@@ -86,15 +83,13 @@ class PerlinNoiseGenerator:
         coords = np.stack(grid, axis=-1).reshape(-1, len(self.resolution))
         if self.time_test: grid_time = time.time() - start_time
 
-
-
-        # Parallel computation using joblib for noise generation
+        # Compute noise and rescale
         if self.time_test: start_time = time.time()
-        noise_values = Parallel(n_jobs=-1)(delayed(self.noise)(coord) for coord in coords)  # -1 uses all available cores
-        noise_values = np.array(noise_values)
+        noise_values = np.array([self.noise(coord) for coord in coords])
         noise_values = noise_min + (noise_values + 1) * (noise_max - noise_min) / 2
         noise_values = noise_values.reshape(self.resolution)
         if self.time_test: noise_rescaling_time = time.time() - start_time
+
 
 
         # Apply cutoffs if needed
@@ -108,7 +103,7 @@ class PerlinNoiseGenerator:
 
         if self.time_test: 
             print("Time for generating mesh grid and coordinates:", grid_time, "seconds")
-            print("Time for parallel noise computation and rescaling:", noise_rescaling_time, "seconds")
+            print("Time for computing noise and rescaling:", noise_rescaling_time, "seconds")
 
         return noise_values
 
