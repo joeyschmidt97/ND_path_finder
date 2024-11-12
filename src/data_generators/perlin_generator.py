@@ -25,7 +25,7 @@ class PerlinNoiseGenerator:
         self.noise = PerlinNoise(octaves=self.octaves, seed=self.seed)  # Pre-create noise object for efficiency
         self.time_test = time_test
 
-    def perlin_data_xarray(self, noise_rescaling=[0, 1], noise_cutoff_list=None):
+    def perlin_data_xarray(self, noise_rescaling=[0, 1], noise_cutoff_list=[0.5,0,1]):
         """
         Generates an N-dimensional Perlin noise dataset with normalized features, using xarray.
 
@@ -46,21 +46,21 @@ class PerlinNoiseGenerator:
         if self.time_test: xarray_conversion_time = time.time() - start_time
 
         # Measure time for generating normalized feature coordinates
-        if self.time_test: start_time = time.time()
-        indices = np.indices(data_array.shape).reshape(len(self.resolution), -1).T
-        scaler = MinMaxScaler()
-        normalized_features = scaler.fit_transform(indices)
-        if self.time_test: normalization_time = time.time() - start_time
+        # if self.time_test: start_time = time.time()
+        # indices = np.indices(data_array.shape).reshape(len(self.resolution), -1).T
+        # scaler = MinMaxScaler()
+        # normalized_features = scaler.fit_transform(indices)
+        # if self.time_test: normalization_time = time.time() - start_time
 
         # Measure time for creating xarray.Dataset
         if self.time_test: start_time = time.time()
         dataset = xr.Dataset(
             {
                 'noise_values': data_array,
-                'normalized_features': (['points', 'coordinates'], normalized_features),
+                # 'normalized_features': (['points', 'coordinates'], normalized_features),
             },
             coords={
-                'points': np.arange(len(normalized_features)),
+                # 'points': np.arange(len(normalized_features)),
                 'coordinates': [f'x{i}' for i in range(len(self.resolution))],
             },
             attrs={'octaves': self.octaves, 
@@ -72,12 +72,14 @@ class PerlinNoiseGenerator:
         # Print timing results
         if self.time_test: 
             print("Time for converting to xarray DataArray:", xarray_conversion_time, "seconds")
-            print("Time for feature normalization:", normalization_time, "seconds")
+            # print("Time for feature normalization:", normalization_time, "seconds")
             print("Time for xarray.Dataset creation:", dataset_creation_time, "seconds")
 
         return dataset
 
-    def _ND_perlin_matrix(self, noise_rescaling=[0, 1], noise_cutoff_list=None):
+
+
+    def _ND_perlin_matrix(self, noise_rescaling=[0, 1], noise_cutoff_list=[0.5,0,1]):
         noise_min, noise_max = noise_rescaling
 
         # Generate mesh grid for each dimension
@@ -109,6 +111,8 @@ class PerlinNoiseGenerator:
         if self.time_test: 
             print("Time for generating mesh grid and coordinates:", grid_time, "seconds")
             print("Time for parallel noise computation and rescaling:", noise_rescaling_time, "seconds")
+
+        # print(noise_values[0:10])
 
         return noise_values
 
