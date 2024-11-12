@@ -90,7 +90,7 @@ class PerlinNoiseGenerator:
 
         # Parallel computation using joblib for noise generation
         if self.time_test: start_time = time.time()
-        noise_values = Parallel(n_jobs=-1)(delayed(self.noise)(coord) for coord in coords)  # -1 uses all available cores
+        noise_values = Parallel(n_jobs=-1)(delayed(self.noise)(tuple(coord)) for coord in coords)  # -1 uses all available cores
         noise_values = np.array(noise_values)
         noise_values = noise_min + (noise_values + 1) * (noise_max - noise_min) / 2
         noise_values = noise_values.reshape(self.resolution)
