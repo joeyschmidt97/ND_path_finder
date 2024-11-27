@@ -18,7 +18,6 @@ class SVMBoundary:
         self.guessed_boundary_points = self.svm_boundary_from_xarray()
         print('Length of boundary points (grid-based):', len(self.guessed_boundary_points))
 
-        # Placeholder for boundary points from the new method
         self.traversed_boundaries = []
         self.evenly_space_boundaries(step_size=boundary_spacing, proximity_threshold=boundary_spacing)
 
@@ -99,8 +98,8 @@ class SVMBoundary:
 
         # Define the parameter grid for grid search
         param_grid = {
-            'C': [10],#[0.01, 0.1, 1, 5, 10, 100],  # Regularization parameter
-            'gamma': [10]#0.001, 0.1, 0.5, 1, 5, 10, 50, 100]  # Kernel coefficient
+            'C': [0.01, 0.1, 1, 5, 10, 100],  # Regularization parameter
+            'gamma': [0.001, 0.1, 0.5, 1, 5, 10, 50, 100]  # Kernel coefficient
         }
 
         # Perform grid search to find the best parameters
