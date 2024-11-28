@@ -76,6 +76,10 @@ class SVMBoundary:
             current_point = next_point
 
         return np.array(boundary)
+    
+
+
+    
     def svm_boundary_from_xarray(self) -> np.array:
         """
         Fits an SVM model to the data in the xarray.Dataset and plots the decision boundary.
