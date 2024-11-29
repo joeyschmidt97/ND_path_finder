@@ -25,22 +25,21 @@ def random_sampler(dataset_dict:dict, num_samples:int):
 
 
 
- def dual_sampler(dataset_dict:dict, num_samples, random_sample_perc:float=0.5):
-     """
-     """
-     features = np.array(dataset_dict['features'])
-     values = np.array(dataset_dict['values'])
-   
-     num_random_samples = int(num_samples * random_sample_perc)
-     random_indices = np.random.choice(len(features), size=num_random_samples, replace=False)
-     random_sampled_features = features[random_indices]
-     random_sampled_values = values[random_indices]
-     rand_sampled_dataset_dict = dataset_dict.copy()
-     rand_sampled_dataset_dict['features'] = random_sampled_features
-     rand_sampled_dataset_dict['values'] = random_sampled_values
-     # print(rand_sampled_dataset_dict)
-
-
+def dual_sampler(dataset_dict:dict, num_samples, random_sample_perc:float=0.5):
+    """
+    """
+    features = np.array(dataset_dict['features'])
+    values = np.array(dataset_dict['values'])
+  
+    num_random_samples = int(num_samples * random_sample_perc)
+    random_indices = np.random.choice(len(features), size=num_random_samples, replace=False)
+    random_sampled_features = features[random_indices]
+    random_sampled_values = values[random_indices]
+    rand_sampled_dataset_dict = dataset_dict.copy()
+    rand_sampled_dataset_dict['features'] = random_sampled_features
+    rand_sampled_dataset_dict['values'] = random_sampled_values
+    # print(rand_sampled_dataset_dict)
+    return rand_sampled_dataset_dict
 
 #     # Contour edge sampling
 #     num_contour_samples = num_samples - num_random_samples
