@@ -30,9 +30,18 @@ def voronoi_points(coord_array, vals, threshold, plot=False):
         plt.gca().set_aspect('equal', adjustable='box')
         plt.show()
 
+
+
+
+
+
+
+
+
 ##From here starts Octavio's contribution
 def minkowski_distance(p1, p2, p_value):
     return np.sum(np.abs(p1 - p2) ** p_value, axis=-1) ** (1 / p_value)
+
 
 def voronoi_points_minkowski(coord_array, vals, resolution, parameter_p, x_range=None, y_range=None, plot=False):
 
