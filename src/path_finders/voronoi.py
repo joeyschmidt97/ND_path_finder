@@ -53,11 +53,11 @@ def compute_sink_vertices(boundary_points, gradient_vectors, plot=False):
     if plot:
         fig, ax = plt.subplots(figsize=(8, 6))
         voronoi_plot_2d(vor, ax=ax, show_vertices=False)
-        plt.quiver(
-            combined_boundary_points[:, 0], combined_boundary_points[:, 1],
-            combined_gradients[:, 0] * 0.005, combined_gradients[:, 1] * 0.005,
-            angles='xy', scale_units='xy', scale=0.01, color='r', alpha=0.8, headwidth=3
-        )
+        # plt.quiver(
+        #     combined_boundary_points[:, 0], combined_boundary_points[:, 1],
+        #     combined_gradients[:, 0] * 0.005, combined_gradients[:, 1] * 0.005,
+        #     angles='xy', scale_units='xy', scale=0.01, color='r', alpha=0.8, headwidth=3
+        # )
         # Highlight vertices
         if len(midpath_coords) > 0:
             plt.scatter(midpath_coords[:, 0], midpath_coords[:, 1], color='g', label='Highlighted Vertices')
