@@ -46,7 +46,7 @@ class PerlinNoiseGenerator:
             points[:, 0],  # x0 values
             points[:, 1],  # x1 values
             c=noise_values,  # Color based on noise values
-            cmap='viridis',
+            cmap='coolwarm',
             s=5,  # Size of points
             alpha=0.8  # Transparency
         )

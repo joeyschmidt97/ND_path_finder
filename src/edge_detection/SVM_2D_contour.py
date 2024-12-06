@@ -139,7 +139,7 @@ def boundary_from_contour_with_gradients_2D(xx, yy, Z, boundary_resolution_len: 
 def plot_2D_boundary(X, y, xx, yy, Z, interp_boundary_points, boundary_gradients):
     # Plot the decision boundary and data points
     plt.figure(figsize=(8, 6))
-    plt.scatter(X[:, 0], X[:, 1], c=y, cmap='viridis', s=5, label="Data Points")
+    plt.scatter(X[:, 0], X[:, 1], c=y, cmap='coolwarm', s=5, label="Data Points")
     plus_minus = 0.1
     # plt.contour(xx, yy, Z, levels=[-plus_minus,0,plus_minus], linestyles=['-'], colors='k')
     plt.contour(xx, yy, Z, levels=[0,plus_minus], linestyles=['-'], colors='k')
@@ -152,14 +152,14 @@ def plot_2D_boundary(X, y, xx, yy, Z, interp_boundary_points, boundary_gradients
     # Plot boundary points and gradient vectors
     for i, (interpolated_points, gradients) in enumerate(zip(interp_boundary_points, boundary_gradients)):
         plt.plot(interpolated_points[:, 0], interpolated_points[:, 1], 'go', markersize=5)
-        plt.quiver(
-            interpolated_points[:, 0], interpolated_points[:, 1],
-            gradients[:, 0]*.005, gradients[:, 1]*.005,
-            angles='xy', scale_units='xy', scale=0.01, color='r', alpha=0.8, headwidth=3
-        )
+        # plt.quiver(
+        #     interpolated_points[:, 0], interpolated_points[:, 1],
+        #     gradients[:, 0]*.005, gradients[:, 1]*.005,
+        #     angles='xy', scale_units='xy', scale=0.01, color='r', alpha=0.8, headwidth=3
+        # )
 
     # Add plot details
-    plt.title("SVM Decision Boundary with Gradient Vectors")
+    plt.title("SVM Decision Boundary")
     plt.axis('square')
     plt.xlim(X[:, 0].min(), X[:, 0].max())
     plt.ylim(X[:, 1].min(), X[:, 1].max())
