@@ -29,7 +29,7 @@ Our data consist of sparse 2D Perlin noise of resolution (100,100) ranging acros
 We used scikit's SVM with a non-linear radial basis function (RBF) kernel to fit to our datas unique curvature adapting to each data image by scanning through several values of $\gamma$ for the strength of the RBF transform and $\alpha$ for L2 (Lasso) regularization.
 
 ### Example edge reconstruction - SVM Boundary Detector (400 samples - 4% of original image)
-<img src="https://github.com/joeyschmidt97/ND_path_finder/blob/main/images/10000_2D_perlin_noise.png" width="400"><img src="https://github.com/joeyschmidt97/ND_path_finder/blob/main/images/10000_400sample_boundary_2D_perlin_noise.png" width="420">
+<img src="https://github.com/joeyschmidt97/ND_path_finder/blob/main/images/10000_2D_perlin_noise.png" width="400"><img src="https://github.com/joeyschmidt97/ND_path_finder/blob/main/images/10000_400sample_boundary_2D_perlin_noise.png" width="410">
 
 ### SVM boundary performance
 We intuitively we that higher sampling allows the SVM boundary reconstruction to work better. We also note that more complex images (i.e. higher octaves) are more difficult to find the boundaries as well.
@@ -43,7 +43,7 @@ In order to find the optimal pathway between the boundary points we employ voron
 
 However, we must filter only those points that are traversible (and not inside the boundary). We therefore use the gradient vectors normal to the boundary and determine the flux at each vertex of a voronoi polygon to determine if we are in/out of the boundary. This allows a programatic way to determine the optimal travel pathways in any number of dimensions.
 
-<img src="https://github.com/joeyschmidt97/ND_path_finder/blob/main/images/voronoi_pathway_image.png" width="600">
+<img src="https://github.com/joeyschmidt97/ND_path_finder/blob/main/images/voronoi_pathway_image.png" width="800">
 
 
 
