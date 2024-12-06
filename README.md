@@ -3,12 +3,12 @@ Explore N-dimensional data by traversing through the space to determine the path
 
 
 # Solving the problem
-This project uses N-dimesnsional Perlin noise (typically for terrain map generation in videogames) to mimic the intricate pathways in physical systems. To simplify the data processing, we round the Perlin noise to 0 or 1 creating "good" or "bad" points respectively.
+This project uses N-dimensional Perlin noise (typically for terrain map generation in videogames) to mimic the intricate pathways in physical systems. To simplify the data processing, we round the Perlin noise to 0 or 1 creating "good" or "bad" points respectively.
 
 <!-- ![Perlin Noise rounded|200](https://github.com/joeyschmidt97/ND_north_star/blob/main/images/perlin_noise.png?raw=true) -->
 <img src="https://github.com/joeyschmidt97/ND_path_finder/blob/main/images/perlin_noise.png" width="512">
 
-To create more complex data, we can increase the octaves of the Perlin noise in order to optimize performance across more complex data pathways.
+To create more complex data, we can increase the octaves of the Perlin noise in order to optimize performance across more complex data pathways (Left - Octave 1, Right - Octave 8).
 
 <img src="https://github.com/joeyschmidt97/ND_path_finder/blob/main/images/perlin_noise_octave_1.png" width="350"><img src="https://github.com/joeyschmidt97/ND_path_finder/blob/main/images/perlin_noise_octave_8.png" width="350">
 
@@ -24,21 +24,28 @@ Our data consist of sparse 2D Perlin noise of resolution (100,100) ranging acros
 
 # Models
 
-### Non-linear SVM
-We used a typical SVM with a non-linear radial basis function (RBF) kernel to fit to our datas unique curvature adapting to each data image by scanning through several values of $\gamma$ for the strength of the RBF transform and $\alpha$ for L2 (Lasso) regularization.
 
-### Example edge reconstruction - SVM Boundary Detector
+## Non-linear SVM
+We used scikit's SVM with a non-linear radial basis function (RBF) kernel to fit to our datas unique curvature adapting to each data image by scanning through several values of $\gamma$ for the strength of the RBF transform and $\alpha$ for L2 (Lasso) regularization.
+
+### Example edge reconstruction - SVM Boundary Detector (400 samples - 4% of original image)
 <img src="https://github.com/joeyschmidt97/ND_path_finder/blob/main/images/10000_2D_perlin_noise.png" width="400"><img src="https://github.com/joeyschmidt97/ND_path_finder/blob/main/images/10000_400sample_boundary_2D_perlin_noise.png" width="400">
 
+### SVM boundary performance
+We intuitively we that higher sampling allows the SVM boundary reconstruction to work better. We also note that more complex images (i.e. higher octaves) are more difficult to find the boundaries as well.
+<img src="https://github.com/joeyschmidt97/ND_path_finder/blob/main/images/model_performance.png" width="600">
 
 
-# Performance
+
+## Voronoi Pathfinder
+In order to find the optimal pathway between the boundary points we employ voronoi diagrams to tesselate the space with polygons whos edges represent the midpoints between adjacent points. 
+<img src="https://github.com/joeyschmidt97/ND_path_finder/blob/main/images/voronoi_tesselation.png" width="400">
+
+However, we must filter only those points that are traversible (and not inside the boundary). We therefore use the gradient vectors normal to the boundary and determine the flux at each vertex of a voronoi polygon to determine if we are in/out of the boundary. This allows a programatic way to determine the optimal travel pathways in any number of dimensions.
+<img src="https://github.com/joeyschmidt97/ND_path_finder/blob/main/images/voronoi_pathway_image.png" width="400">
 
 
-<img src="https://github.com/joeyschmidt97/ND_path_finder/blob/main/images/model_performance.png" width="780">
 
-- WCE diverges while the MSE converges: Although we lose some features in the whole picture, we still guarantee pointwise accuracy at a certain level
-- Zero-filling outperforms at the top of MSE: In extreme case, zero-filling guarantee 50% accuracy when kNN is out of the threshold of good performance
 
 
 # Example Usage
