@@ -2,6 +2,19 @@
 Explore N-dimensional data by traversing through the space to determine the pathways through these high-dimensional spaces while avoiding bad/negative regions. Particularly useful for control optimization, this technique allows the visualization and traversal of pathways through high-dimensional structures that are difficult to image and understand.
 
 
+# Installation
+
+
+
+# Example Usage
+
+
+
+
+
+
+
+
 # Solving the problem
 This project uses N-dimensional Perlin noise (typically for terrain map generation in videogames) to mimic the intricate pathways in physical systems. To simplify the data processing, we round the Perlin noise to 0 or 1 creating "good" or "bad" points respectively.
 
@@ -47,12 +60,3 @@ However, we must filter only those points that are traversible (and not inside t
 
 
 
-
-
-# Example Usage
-
-
-
-
-
-# Installation
