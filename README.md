@@ -32,7 +32,7 @@ We used scikit's SVM with a non-linear radial basis function (RBF) kernel to fit
 <img src="https://github.com/joeyschmidt97/ND_path_finder/blob/main/images/10000_2D_perlin_noise.png" width="400"><img src="https://github.com/joeyschmidt97/ND_path_finder/blob/main/images/10000_400sample_boundary_2D_perlin_noise.png" width="410">
 
 ### SVM boundary performance
-We intuitively we that higher sampling allows the SVM boundary reconstruction to work better. We also note that more complex images (i.e. higher octaves) are more difficult to find the boundaries as well.
+We intuitively know that higher sampling allows the SVM boundary reconstruction to work better. We also note that more complex images (i.e. higher octaves) are more difficult to find the boundaries as well.
 <img src="https://github.com/joeyschmidt97/ND_path_finder/blob/main/images/model_performance.png" width="600">
 
 
