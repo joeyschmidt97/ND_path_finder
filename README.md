@@ -52,14 +52,13 @@ Summary
 2. Create an env from the provided environment.yml file
 3. Go through examples provided in examples directories for each project
 
-To get started with this repo you'll want to add the directory above to your python filepath. This will vary for different machines (i.e. Windows/Mac) so you may need to look up on a guide how to do this.
+To get started with this repo you'll want to add the directory above to your PYTHONPATH. This will vary for different machines (i.e. Windows/Mac) so you may need to look up on a guide how to do this.
 
 You'll then want to create an env (preferably with Anaconda) and use the provided environment.yml to load in the appropriate packages needed for this repo. This is done with the command conda env create -f environment.yml  (note you must be in the same dir as the environment.yml file)
 
 
 # Example Usage
-
 The main parts of the code are split into the SVM boundary finder and the Voronoi pathfinder code. They can be found:
 1. SVM boundary finder example code located in `examples/edge_detection_tests/svm_boundary.ipynb` as a python notebook
-2. VOronoi pathfinder example code located in `examples/path_finders_tests/voronoi.ipynb` as a python notebook
+2. Voronoi pathfinder example code located in `examples/path_finders_tests/voronoi.ipynb` as a python notebook
 
