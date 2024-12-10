@@ -47,14 +47,16 @@ However, we must filter only those points that are traversible (and not inside t
 
 
 # Installation
-Summary
-1. Add the directory above wherever this repo is installed to your PYTHONPATH
-2. Create an env from the provided environment.yml file
-3. Go through examples provided in examples directories for each project
 
 To get started with this repo you'll want to add the directory above to your PYTHONPATH. This will vary for different machines (i.e. Windows/Mac) so you may need to look up on a guide how to do this.
 
 You'll then want to create an env (preferably with Anaconda) and use the provided environment.yml to load in the appropriate packages needed for this repo. This is done with the command conda env create -f environment.yml  (note you must be in the same dir as the environment.yml file)
+
+### Installation Summary
+1. Add the directory above wherever this repo is installed to your PYTHONPATH
+2. Create an env from the provided environment.yml file
+3. Go through examples provided in examples directories for each project
+
 
 
 # Example Usage
