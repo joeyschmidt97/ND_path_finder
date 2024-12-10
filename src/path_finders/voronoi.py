@@ -2,65 +2,74 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.spatial import Voronoi, voronoi_plot_2d
 
-
 def compute_sink_vertices(boundary_points, gradient_vectors, plot=False):
-
+    """
+    Computes the Voronoi diagram based on boundary points and gradient vectors, 
+    identifies vertices where all gradients point inward, and optionally plots the result.
+    
+    Parameters:
+    - boundary_points: A list of 2D boundary points that define the Voronoi diagram.
+    - gradient_vectors: A list of gradient vectors corresponding to the boundary points.
+    - plot (optional): A boolean flag to indicate whether to plot the results. Default is False.
+    
+    Returns:
+    - midpath_coords: The coordinates of Voronoi vertices where all gradients point inward.
+    """
+    
+    # Combine boundary points and gradient vectors into single arrays
     combined_boundary_points = np.vstack([np.vstack(segment) for segment in boundary_points])
     combined_gradients = np.vstack([np.vstack(grad) for grad in gradient_vectors])
 
-    # Compute the Voronoi diagram
+    # Compute the Voronoi diagram based on the combined boundary points
     vor = Voronoi(combined_boundary_points)
 
     # Initialize a set to store vertices to highlight
     highlight_vertices = set()
 
-    # Loop through Voronoi vertices
+    # Loop through all Voronoi vertices
     for vertex_idx, vertex in enumerate(vor.vertices):
+        # Skip vertices that are outside the bounds (x, y should be between 0 and 1)
         if np.any(vertex < 0) or np.any(vertex > 1):
-            # Skip vertices outside the diagram bounds
             continue
 
         inward_count = 0
         outward_count = 0
 
-        # Check all regions (sites) associated with the vertex
+        # Loop through each region (site) associated with the current vertex
         for point_idx in range(len(vor.point_region)):
-            # Get the region of the point
             region_idx = vor.point_region[point_idx]
             region = vor.regions[region_idx]
 
-            # Skip regions with infinite vertices
+            # Skip regions with infinite vertices and check if the vertex belongs to the region
             if -1 in region or vertex_idx not in region:
                 continue
 
-            # Compute vector from site to vertex
+            # Compute the vector from the site to the vertex
             site_to_vertex = vertex - combined_boundary_points[point_idx]
 
-            # Check if gradient points "into" or "away" from the vertex
+            # Check the direction of the gradient vector relative to the site-to-vertex vector
             if np.dot(combined_gradients[point_idx], site_to_vertex) < 0:
-                inward_count += 1  # Gradient points into the vertex
+                inward_count += 1  # Gradient points inward (towards the vertex)
             else:
-                outward_count += 1  # Gradient points away from the vertex
+                outward_count += 1  # Gradient points outward (away from the vertex)
 
-        # Retain vertex if all gradients point inward
+        # If all gradients point inward, highlight the vertex
         if outward_count == 0:
             highlight_vertices.add(vertex_idx)
 
     # Extract the coordinates of highlighted vertices
     midpath_coords = vor.vertices[list(highlight_vertices)]
 
-    # Plotting the results
+    # Plot the Voronoi diagram with highlighted vertices if requested
     if plot:
         fig, ax = plt.subplots(figsize=(8, 6))
         voronoi_plot_2d(vor, ax=ax, show_vertices=False)
-        # plt.quiver(
-        #     combined_boundary_points[:, 0], combined_boundary_points[:, 1],
-        #     combined_gradients[:, 0] * 0.005, combined_gradients[:, 1] * 0.005,
-        #     angles='xy', scale_units='xy', scale=0.01, color='r', alpha=0.8, headwidth=3
-        # )
-        # Highlight vertices
+
+        # Highlight vertices where all gradients point inward
         if len(midpath_coords) > 0:
             plt.scatter(midpath_coords[:, 0], midpath_coords[:, 1], color='g', label='Highlighted Vertices')
+        
+        # Configure plot appearance
         plt.legend()
         plt.xlim(0, 1)
         plt.ylim(0, 1)
@@ -69,104 +78,43 @@ def compute_sink_vertices(boundary_points, gradient_vectors, plot=False):
 
     return midpath_coords
 
-# Example usage
-# midpath_coords = compute_sink_vertices(boundary_points, gradients, plot=True)
-
-
-
 
 def voronoi_points(boundary_points, gradient_vectors, plot=False):
-
+    """
+    Computes and optionally plots the Voronoi diagram for the given boundary points and gradient vectors.
+    
+    Parameters:
+    - boundary_points: A list of 2D boundary points that define the Voronoi diagram.
+    - gradient_vectors: A list of gradient vectors corresponding to the boundary points.
+    - plot (optional): A boolean flag to indicate whether to plot the results. Default is False.
+    
+    Returns:
+    - vor: The Voronoi diagram object containing the Voronoi regions and vertices.
+    """
+    
+    # Combine boundary points and gradient vectors into single arrays
     combined_boundary_points = np.vstack([np.vstack(segment) for segment in boundary_points])
     combined_gradients = np.vstack([np.vstack(grad) for grad in gradient_vectors])
 
-    # Compute Voronoi diagram
+    # Compute the Voronoi diagram based on the combined boundary points
     vor = Voronoi(combined_boundary_points)
 
+    # Plot the Voronoi diagram and gradient vectors if requested
     if plot:
-        # Plotting
-        # plt.figure(figsize=(8, 6))
         fig, ax = plt.subplots(figsize=(8, 6))
         voronoi_plot_2d(vor, ax=ax, show_vertices=False)
+
+        # Add gradient vectors to the plot as red arrows
         plt.quiver(
             combined_boundary_points[:, 0], combined_boundary_points[:, 1],
-            combined_gradients[:, 0]*.005, combined_gradients[:, 1]*.005,
+            combined_gradients[:, 0] * 0.005, combined_gradients[:, 1] * 0.005,
             angles='xy', scale_units='xy', scale=0.01, color='r', alpha=0.8, headwidth=3
         )
-        # ax.plot(filtered_coord[:, 0], filtered_coord[:, 1], 'ko')
+        
+        # Configure plot appearance
         plt.xlim(0, 1)
         plt.ylim(0, 1)
-        
-        # Configure the plot
         plt.gca().set_aspect('equal', adjustable='box')
-
         plt.show()
 
     return vor
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-##From here starts Octavio's contribution
-def minkowski_distance(p1, p2, p_value):
-    return np.sum(np.abs(p1 - p2) ** p_value, axis=-1) ** (1 / p_value)
-
-
-def voronoi_points_minkowski(coord_array, vals, resolution, parameter_p, x_range=None, y_range=None, plot=False):
-
-    filtered_coord = []
-    filtered_vals = []      
-    threshold = 0.5
-
-    for ind,v in enumerate(vals):
-        if v > threshold:
-            filtered_vals.append(v)
-
-            temp_coord = [coord[ind] for coord in coord_array]
-            filtered_coord.append(temp_coord)
-
-    if x_range is None:
-        x_min, x_max = filtered_coord[:, 0].min() - 1, filtered_coord[:, 0].max() + 1
-        x_range = (x_min, x_max)
-    if y_range is None:
-        y_min, y_max = filtered_coord[:, 1].min() - 1, filtered_coord[:, 1].max() + 1
-        y_range = (y_min, y_max)
-
-    # Create a grid of points
-    x = np.linspace(x_range[0], x_range[1], resolution)
-    y = np.linspace(y_range[0], y_range[1], resolution)
-    xv, yv = np.meshgrid(x, y)
-    grid_points = np.column_stack([xv.ravel(), yv.ravel()])
-    # Determine the closest generator for each grid point based on Minkowski distance
-    regions = np.zeros(len(grid_points), dtype=int)
-    for i, grid_point in enumerate(grid_points):
-        distances = minkowski_distance(filtered_coord, grid_point, parameter_p)
-        regions[i] = np.argmin(distances)
-
-    # Reshape the regions into a 2D array for plotting
-    regions_reshaped = regions.reshape(resolution, resolution)
-    
-    # Plot the Voronoi diagram
-    fig, ax = plt.subplots(figsize=(8, 8))
-    ax.imshow(regions_reshaped, extent=(x_range[0], x_range[1], y_range[0], y_range[1]), 
-              origin='lower', cmap='tab20', alpha=0.5)
-    ax.scatter(filtered_coord[:, 0], filtered_coord[:, 1], color='red', zorder=5, label='Generating Points')
-    ax.set_xlim(x_range)
-    ax.set_ylim(y_range)
-    ax.set_title(f"Voronoi Diagram with Minkowski Distance (p={parameter_p})")
-    ax.legend()
-    plt.grid(True)
-    plt.show()

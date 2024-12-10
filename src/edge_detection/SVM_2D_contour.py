@@ -12,7 +12,7 @@ from scipy.interpolate import interp1d
 
 def svm_boundary_2D(dataset:xr.Dataset, boundary_resolution_len=0.5, boundary_mesh_resolution = 500, plot:bool = False):
     """
-    Fits an SVM model to the data in the xarray.Dataset and plots the decision boundary.
+    Fits an SVM model to the data in the xarray.Dataset and plots the decision boundary (only works for 2D).
 
     Parameters:
     - dataset (xarray.Dataset): The input dataset containing 'points' and 'noise_values'.
