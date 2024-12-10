@@ -2,25 +2,6 @@
 Explore N-dimensional data by traversing through the space to determine the pathways through these high-dimensional spaces while avoiding bad/negative regions. Particularly useful for control optimization, this technique allows the visualization and traversal of pathways through high-dimensional structures that are difficult to image and understand.
 
 
-# Installation
-Summary
-1. Add the directory above wherever this repo is installed to your PYTHONPATH
-2. Create an env from the provided environment.yml file
-3. Go through examples provided in examples directories for each project
-
-To get started with this repo you'll want to add the directory above to your python filepath. This will vary for different machines (i.e. Windows/Mac) so you may need to look up on a guide how to do this.
-
-You'll then want to create an env (preferably with Anaconda) and use the provided environment.yml to load in the appropriate packages needed for this repo. This is done with the command conda env create -f environment.yml  (note you must be in the same dir as the environment.yml file)
-
-
-# Example Usage
-
-
-
-
-
-
-
 
 # Solving the problem
 This project uses N-dimensional Perlin noise (typically for terrain map generation in videogames) to mimic the intricate pathways in physical systems. To simplify the data processing, we round the Perlin noise to 0 or 1 creating "good" or "bad" points respectively.
@@ -44,7 +25,6 @@ Our data consist of sparse 2D Perlin noise of resolution (100,100) ranging acros
 
 # Models
 
-
 ## Non-linear SVM
 We used scikit's SVM with a non-linear radial basis function (RBF) kernel to fit to our datas unique curvature adapting to each data image by scanning through several values of $\gamma$ for the strength of the RBF transform and $\alpha$ for L2 (Lasso) regularization.
 
@@ -66,4 +46,20 @@ However, we must filter only those points that are traversible (and not inside t
 <img src="https://github.com/joeyschmidt97/ND_path_finder/blob/main/images/voronoi_pathway_image.png" width="800">
 
 
+# Installation
+Summary
+1. Add the directory above wherever this repo is installed to your PYTHONPATH
+2. Create an env from the provided environment.yml file
+3. Go through examples provided in examples directories for each project
+
+To get started with this repo you'll want to add the directory above to your python filepath. This will vary for different machines (i.e. Windows/Mac) so you may need to look up on a guide how to do this.
+
+You'll then want to create an env (preferably with Anaconda) and use the provided environment.yml to load in the appropriate packages needed for this repo. This is done with the command conda env create -f environment.yml  (note you must be in the same dir as the environment.yml file)
+
+
+# Example Usage
+
+The main parts of the code are split into the SVM boundary finder and the Voronoi pathfinder code. They can be found:
+1. SVM boundary finder example code located in `examples/edge_detection_tests/svm_boundary.ipynb` as a python notebook
+2. VOronoi pathfinder example code located in `examples/path_finders_tests/voronoi.ipynb` as a python notebook
 
